@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>San Francisco fire department</title>
+        <script type="text/javascript" src="d3/d3.js"></script>
+        <script type="text/javascript" src="d3/d3-tip/index.js"></script>
+        <link rel="stylesheet" href="style/myStyle.css">
+        <link rel="stylesheet" href="style/normalize.css">
+        <link rel="stylesheet" href="style/skeleton.css">
+    </head>
+    <body>
+        <div class='container'>
+           
+            <div class='row'>
+                <div class='twelve columns exercise-view'>
+                    <h1 >Fire Department Calls for Service</h1>
+                    <h4 >Analyses of the response time of the San Francisco fire department</h4>
+
+                    <div class="visual-container"> 
+                        <div class='visual-buttons'> 
+                            <a href="index.html"> <button id="page1_btn" class="visual-button page_button_chosen">Introduction</button></a>
+                            <a href="responsetime.html"> <button id="page2_btn" class="visual-button">Response time</button></a>
+                            <a href="geoplot.html"><button id="page3_btn" class="visual-button">Geo plot</button></a>
+                            <a href="machinelearning.html"><button id="page4_btn" class="visual-button">Machine learning</button></a>
+                        </div>
+                    <div id="Visualization1_text">
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='twelve columns exercise-view'>
+                    <h2>The project</h2>
+                    <div class="visual-container"> 
+                        <div id="Visualization1_text">
+                            <p>In the following section we will analyse the dataset Fire Calls-For-Service. The dataset includes all fire units reponses to calls. Each record includes the call number, incident number, address, unit identifier, call type and disposition. All relevent time intervals are also included and that is what this article will mainly focus on. Because the dataset is based on repsonses, and since most calls involve multiple units, there are multiple record for each call number. In the following analysis the reponds time is defined as the time that it take the first responding unit to show up for service. 
+
+                            To make the analysis even more interesting we included two additional datasets. One that includes the location of each firestation in SF and one that contains general information about each neighborhood in San Francisco. 
+                            </p>
+
+                            <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=wxvRpqFD-ck">here.</a> </p>
+
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel placerat arcu, ac ultricies metus. Fusce quis nibh massa. Proin sagittis risus ex, vel aliquam sem egestas et. Nulla facilisi. Pellentesque sodales, urna sed dictum sagittis, risus dui viverra dui, in sodales augue metus quis odio. Nullam orci urna, pretium ut laoreet id, gravida in tellus. Donec ullamcorper rhoncus consectetur. 
+                            </p>
+
+                            <a href=""> Link to notebook 1 </a> <br/>
+                            <a href=""> Link to notebook 2 </a> <br/>
+                            <a href=""> Link to notebook 3 </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div> 
+    </body>
+</html>

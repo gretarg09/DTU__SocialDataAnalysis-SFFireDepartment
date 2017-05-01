@@ -1,0 +1,151 @@
+body {
+	background-color: white;
+	font-family: "sans serif";
+	font-size: 18px;
+}
+p {
+	/*text-align: center;*/
+	font-size: 1em;
+    /*padding-top:4em;*/
+	/*font-weight: bold*/
+}
+
+h1{
+  color:#800020;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  text-align: center;
+  border: 4px solid black;
+  width: 100%;
+}
+
+h4{
+  padding-top: 1em;
+  text-align: center;
+  padding-bottom: 0.5em;
+}
+
+.page_button_chosen{
+  border-width: 1.5px;
+  border-color: black;
+}
+
+h2 {
+    padding-top:0em;
+    padding-bottom: 1em;
+}
+
+h6 {
+    padding-top: 2em;
+}
+
+
+.visual-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.visual-button {
+    /*align:center;*/
+    /*font-family: inherit;*/
+    font-size: 1em;
+    /*font-weight: bold;*/
+    /*padding-right: 1em;*/
+    /*border: none;*/
+    /*background: none;*/
+}
+
+.visual-container {
+    padding-bottom:2em;
+    padding-top:1em;
+}
+
+.mapDistrict:hover {
+    fill:#CCCCCC;
+}
+
+.bar {
+  fill: black;
+}
+
+.bar:hover {
+  fill: rgba(135,206,235,1);
+}
+.overlapping {
+z-index: -1000;
+position: absolute;
+
+}
+.overlapping2 {
+    z-index: -1000;
+    position:absolute;
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    right:0;
+    left: 0;
+    font-size: 1.5em;
+    fill:rgba(135,206,235,1);
+}
+
+.d3-tip {
+  line-height: 1;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.tipperCol {
+    color: #B3B3B3;
+}
+
+.fire_station_circles {
+    stroke:#8b0000;
+    stroke-width: 2;
+    fill:#F5D04C;
+}
+
+.fire_station_circles:hover {
+    fill:#8b0000;
+}
+
+.late_arrival_circles{
+    stroke:#000000;
+    stroke-width: 2;
+    fill:#000000;
+}
+
+.color-scale-span{
+    display:inline-block;
+    vertical-align: middle; 
+}
+
+.neighborhood-title{
+    text-align:right;
+}
+
+.geoplot_result_text {
+    margin-top: 40px
+}
+
+

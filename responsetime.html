@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>San Francisco fire department</title>
+        <script type="text/javascript" src="d3/d3.js"></script>
+        <script type="text/javascript" src="d3/d3-tip/index.js"></script>
+        <link rel="stylesheet" href="style/myStyle.css">
+        <link rel="stylesheet" href="style/normalize.css">
+        <link rel="stylesheet" href="style/skeleton.css">
+    </head>
+    <body>
+        <div class='container'>
+           
+            <div class='row'>
+                <div class='twelve columns exercise-view'>
+                    <h1 >Fire Department Calls for Service</h1>
+                    <h4 >Analyses of the response time of the San Francisco fire department</h4>
+
+                    <div class="visual-container"> 
+                        <div class='visual-buttons'> 
+                            <a href="index.html"> <button id="page1_btn" class="visual-button">Introduction</button></a>
+                            <a href="responsetime.html"> <button id="page2_btn" class="visual-button page_button_chosen">Response time</button></a>
+                            <a href="geoplot.html"><button id="page3_btn" class="visual-button">Geo plot</button></a>
+                            <a href="machinelearning.html"><button id="page4_btn" class="visual-button">Machine learning</button></a>
+                        </div>
+                    <div id="Visualization1_text">
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='twelve columns exercise-view'>
+
+                    <h2>Analysing respond time</h2>
+
+                    <div class="visual-container"> 
+
+                        <div class='visual-buttons'> 
+                            <button id="Alarm" class="button_hist button_hist1 visual-button">Alarm</button>
+                            <button id="Fire" class="button_hist button_hist1 visual-button">Fire</button>
+                            <button id="NonLife-threatening" class="button_hist button_hist1 visual-button">Non Life threatening</button>
+                            <button id="PotentiallyLife-Threatening" class="button_hist button_hist1 visual-button">Potentially life threatning</button>
+                            <button id="combined" class="button_hist button_hist1 visual-button">All</button>
+                        </div>
+
+                        <div class='visual-buttons'> 
+                            <button id="x2012" class="button_hist button_hist2 visual-button">2012</button>
+                            <button id="x2013" class="button_hist button_hist2 visual-button">2013</button>
+                            <button id="x2014" class="button_hist button_hist2 visual-button">2014</button>
+                            <button id="x2015" class="button_hist button_hist2 visual-button">2015</button>
+                            <button id="x2016" class="button_hist button_hist2 visual-button">2016</button>
+                            <button id="overall" class="button_hist button_hist2 visual-button">All</button>
+                        </div>
+
+                        <div id="area2"></div> 
+
+                    </div>
+                </div>
+            </div>
+
+
+        <script type="text/javascript">  
+
+        // HISTOGRAM
+
+            var response_times;
+            var primaryColor = "rgba(135,206,235,1)";
+
+            var button_chosen_cluster1 = "combined";
+            var button_chosen_cluster2 = "overall";
+
+            setcolor_button_hist(button_chosen_cluster1,1);
+            setcolor_button_hist(button_chosen_cluster2,2);
+
+
+            d3.json("Notebook/Data/response_time_groups.json", function(error,json) {
+                if (error) {  //If error is not null, something went wrong.
+                    console.log(error);  //Log the error.
+                } 
+                else {      //If no error, the file loaded correctly. Yay!
+                    console.log("respondtime groups");
+                    console.log(json);  //Log the data.
+                    response_times = json;
+
+                    var margin = {top: 40, right: 20, bottom: 200, left: 60},
+                    width = 960 - margin.left - margin.right,
+                    height = 600 - margin.top - margin.bottom;
+
+                    var xScale = d3.scale.ordinal()
+                        .domain(response_times["combinedoverall"].map(function(d) { return d["hood"]; }))
+                        .rangeRoundBands([0, width], .1);
+
+                    var yScale = d3.scale.linear()
+                        .domain([0, 1000])
+                        .range([height, 0]);
+                        
+                    var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom");
+
+                    var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left")
+                      //.tickFormat(formatPercent);
+
+                    var tip = d3.tip()
+                        .attr('class', 'd3-tip')
+                        .offset([-20, 0])
+                        .html(function(d) {
+                            return "<div style='margin: 0px 0px 15px 0px; text-align:center';><strong style='margin-right: 6px'>" +d['hood'] + "</strong></div>"
+
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average respond time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + minutes_from_seconds(d["response"]["avg"]) + "</div>"
+
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to nearest fire station:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getMetersFromKm(d["distance"]["avg"]) + " meters" +"</div>"
+
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ration of late responds time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getPercentage(d["late-ratio"]) + "%" + "</div>"
+
+                            + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ration of critically late responds time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getPercentage(d["verylate-ratio"]) + "%" + "</div>"
+                        });
+                    
+
+                    var svg2 = d3.select("#area2")
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                    svg2.call(tip);
+
+                    svg2.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis)
+                        .selectAll("text") 
+                        .style("text-anchor", "end")
+                        .attr("dx", "-.8em")
+                        .attr("dy", ".15em")
+                        .attr("transform", function(d) { return "rotate(-65)" })
+
+                    svg2.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Time (sek)");
+
+                    svg2.selectAll(".bar")
+                        .data(response_times["combinedoverall"])
+                        .enter()
+                        .append("rect")
+                        .attr("class", "bar")
+                        .attr("x", function(d) { return xScale(d["hood"]); })
+                        .attr("width", xScale.rangeBand())
+                        .attr("y", function(d) { return yScale(d["response"]["avg"]); })
+                        .attr("height", function(d) { return height - yScale(d["response"]["avg"]); })
+                        .on('mouseover', tip.show)
+                        .on('mouseout', tip.hide);
+
+                    //On click, update with new data      
+                    d3.selectAll("button")
+                        .filter(".button_hist1")
+                        .on("click", function() {
+                            var button_ID = d3.select(this).attr("id");
+                            button_chosen_cluster1 = button_ID;
+                            setcolor_button_hist(button_ID,1);
+                            update_histogram();
+                        });
+
+                    //On click, update with new data      
+                    d3.selectAll("button")
+                        .filter(".button_hist2")
+                        .on("click", function() {
+                            var button_ID = d3.select(this).attr("id");
+                            button_chosen_cluster2 = filter_id(button_ID);
+                            setcolor_button_hist(button_ID,2);
+                            update_histogram();
+                        });
+
+
+                    // Updating histogram
+                    function update_histogram()
+                    {
+                        class_combined = button_chosen_cluster1 + button_chosen_cluster2;
+
+                        //Update all rects
+                        var bar = svg2.selectAll("rect")
+                           .data(response_times[class_combined]);
+
+                        bar.transition()
+                            .duration(500)
+                            .attr("x", function(d) { return xScale(d["hood"]); })
+                            .attr("width", xScale.rangeBand())
+                            .attr("y", function(d) { return yScale(d["response"]["avg"]); })
+                            .attr("height", function(d) { return height - yScale(d["response"]["avg"]); });
+                    }
+
+                }
+            });
+
+            // Sets the text color of each p as black except the chosen model
+            function setcolor_button_hist(chosen_button,nr_buttonCluster) {
+                var class_name = ".button_hist" + nr_buttonCluster;
+
+                d3.selectAll("button")
+                    .filter(class_name)
+                    .style("color", "black");
+
+                d3.selectAll("button")
+                    .filter("#"+chosen_button)
+                    .style("color", primaryColor);
+
+            }
+
+            function filter_id(id){
+                if(id == "x2012"){
+                    return "2012";
+                }
+                if(id == "x2013"){
+                    return "2013";
+                }
+                if(id == "x2014"){
+                    return "2014";
+                }
+                if(id == "x2015"){
+                    return "2015";
+                }
+                if(id == "x2016"){
+                    return "2016";
+                }
+                else{
+                    return "overall"
+                }
+            }
+
+            // Change seconds to minutes and seconds
+            function minutes_from_seconds(time){
+                time = Math.round(time);
+                var minutes = Math.floor(time / 60);
+                var seconds = Math.round(time - minutes * 60);
+
+                return minutes + " min " + seconds + " seconds";
+            }
+
+            function getPercentage(n){
+                return Math.round(n * 100 * 100)/100;
+            }
+
+            function getMetersFromKm(n){
+                return Math.round(n * 1000);
+            }
+
+        </script>
+
+        </div> 
+    </body>
+</html>
