@@ -11,12 +11,13 @@ p {
 }
 
 h1{
-  color:#800020;
+  color:white;
   padding-top: 1.2em;
   padding-bottom: 1.2em;
   text-align: center;
   border: 4px solid black;
   width: 100%;
+  background-color: #800020;
 }
 
 h4{
@@ -68,7 +69,8 @@ h6 {
 }
 
 .bar:hover {
-  fill: rgba(135,206,235,1);
+  /*fill: rgba(135,206,235,1);*/
+  fill:rgba(208,85,75,1);
 }
 .overlapping {
 z-index: -1000;
@@ -138,6 +140,7 @@ position: absolute;
 .color-scale-span{
     display:inline-block;
     vertical-align: middle; 
+    font-size: 0.8em;
 }
 
 .neighborhood-title{

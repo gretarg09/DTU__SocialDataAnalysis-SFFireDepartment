@@ -11,11 +11,10 @@
         <link rel="stylesheet" href="style/skeleton.css">
     </head>
     <body>
+        <h1 >Fire Department Calls for Service</h1>
         <div class='container'>
-           
             <div class='row'>
                 <div class='twelve columns exercise-view'>
-                    <h1 >Fire Department Calls for Service</h1>
                     <h4 >Analyses of the response time of the San Francisco fire department</h4>
 
                     <div class="visual-container"> 
@@ -54,33 +53,33 @@
                     <div style="text-align:left;">
                         <div>
                             <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(128,128,128,1)" stroke="rgba(128, 128, 128, 1.0)" stroke-width="2"/>
+                                <rect x="0" y="0" width="20" height="25" fill="rgba(208,85,75,1)" stroke="rgba(128, 128, 128, 1.0)" stroke-width="1"/>
                             </svg>
-                             <span class="color-scale-span" id="scale_text1"> Average time <= 8 min </span>
+                             <span class="color-scale-span" id="scale_text1"> Avg. response time <= 8 min </span>
                         </div>
 
                         <div>
                             <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(153,153,153,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="2"/>
+                                <rect x="0" y="0" width="20" height="25" fill="rgba(226,153,147,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
                             </svg>
 
-                             <span class="color-scale-span" id="scale_text2"> 7 min =< Average time < 8 min</span>
+                             <span class="color-scale-span" id="scale_text2"> 7 min =< Avg. response time < 8 min</span>
                         </div>
 
                         <div>
                             <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(179,179,179,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="2"/>
+                                <rect x="0" y="0" width="20" height="25" fill="rgba(226,234,154,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
                             </svg>
 
-                             <span class="color-scale-span" id="scale_text3"> 6 min =< Average time < 7 min </span>
+                             <span class="color-scale-span" id="scale_text3"> 6 min =< Avg. response time < 7 min </span>
                         </div>
 
                         <div >
                             <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(230,230,230,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="2"/>
+                                <rect x="0" y="0" width="20" height="25" fill="rgba(242,246,211,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
                             </svg>
 
-                             <span class="color-scale-span" id="scale_text4"> Average time < 6 min </span>
+                             <span class="color-scale-span" id="scale_text4"> Avg response time < 6 min </span>
                         </div>
                     </div>
 
@@ -117,7 +116,10 @@
 
         <script type="text/javascript">
             // GEOPLOT AND HOURLY HISTOGRAM 
-            var primaryColor = "rgba(135,206,235,1)"
+            //var primaryColor = "rgba(135,206,235,1)"
+            var primaryColor = "rgba(208,85,75,1)";
+            var secondaryColor = "rgba(226,153,147,1)";
+            var moreinfoTextColor = "rgba(255,255,255)";
 
             var fire_stations;
             var neighborhoods_statistic;
@@ -141,7 +143,10 @@
             setcolor_button(geo_button_year_chosen,2);
 
             //var map_color = ["rgba(230,230,230,1)", "rgba(255,69,0, 0.4)", "rgba(255,69,0, 0.6)","rgba(255,69,0,0.8)"]
-            var map_color = ["rgba(230,230,230,1)", "rgba(179,179,179,1)", "rgba(153,153,153,1)","rgba(128,128,128,1)"]
+            //var map_color = ["rgba(230,230,230,1)", "rgba(179,179,179,1)", "rgba(153,153,153,1)","rgba(128,128,128,1)"]
+
+            //Yellow to red map color
+            var map_color = ["rgba(242,246,211,1)","rgba(226,234,154,1)", "rgba(226,153,147,1)","rgba(208,85,75,1)"];
 
             var w = 960,
                 h = 600;
@@ -225,7 +230,7 @@
                 .html(function(d,i) {
                     return "<div style='margin: 0px 0px 15px 0px; text-align:center';><strong style='margin-right: 6px'>" + "Hour: " + i +  "</strong></div>"
 
-                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average response time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + minutes_from_seconds(d) + " (" + Math.round(d) + " sek)"+ "</div>";
+                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>"+ minutes_from_seconds(d) + " (" + Math.round(d) + " sek)"+ "</div>";
                 })
             
             var svg1_histo = d3.select("#area1_histo")
@@ -423,7 +428,8 @@
                     .attr('stroke',function(d,i){
                         if(i == 41){
                             console.log("running inside 41");
-                            return primaryColor;
+                            //return primaryColor;
+                            return "#000000";
                         }
                         else {
                             return "#626262";
@@ -444,6 +450,7 @@
                 create_FireStation_circles(fire_stations);
             }
 
+            // Delete fire station circles
             function delete_FireStation_circles()
             {
                 var circle = svg.selectAll("circle")
@@ -501,7 +508,7 @@
 
             }
 
-
+            // Create the hourly Histagram for the neighborhoods
             function create_hourly_histogram()
             {
                 svg1_histo.append("g")
@@ -533,6 +540,7 @@
                     .on('mouseout', tip.hide);
             }
 
+            // Update the hourly Histogram with information about a specific neighborhood
             function update_hourly_histogram()
             {
                 //Update all rects
@@ -645,16 +653,16 @@
                 var text4;
 
                 if(geo_button_chosen == "geo_button1"){
-                    text1 = "Average time <= 8 min";
-                    text2 = "7 min =< Average time < 8 min";
-                    text3 = "6 min =< Average time < 7 min";
-                    text4 = "Average time < 6 min";
+                    text1 = "Avg. response time <= 8 min";
+                    text2 = "7 min =< Avg. response time < 8 min";
+                    text3 = "6 min =< Avg. response time < 7 min";
+                    text4 = "Avg. response time < 6 min";
                 }
                 else if (geo_button_chosen == "geo_button2"){
-                    text1 = "Average distance to firestation <= 1500 m";
-                    text2 = "1000 m <= Average distance to firestation < 1500 m";
-                    text3 = "500 m <= Average distance to firestation < 1000 m";
-                    text4 = "Average distance to firestation < 500 m";
+                    text1 = "Avg. distance to firestation <= 1500 m";
+                    text2 = "1000 m <= Avg. distance to firestation < 1500 m";
+                    text3 = "500 m <= Avg. distance to firestation < 1000 m";
+                    text4 = "Avg. distance to firestation < 500 m";
                 }
                 else if (geo_button_chosen == "geo_button3"){
                     text1 = "Ratio of late responses <= 10%";
@@ -719,13 +727,13 @@
             function get_additional_info_for_neighborhood(d,i){
                 var additional_info_html = "<div style='margin: 0px 0px 15px 0px; text-align:center';><strong style='margin-right: 6px'>" + neighborhoods_statistic[i]['neighborhood'] + "</strong></div>"
 
-                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average response time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + minutes_from_seconds(neighborhood_map_data[i]["response"]["avg"]) + "</div>"
+                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + minutes_from_seconds(neighborhood_map_data[i]["response"]["avg"]) + "</div>"
 
-                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to responding fire station:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getMetersFromKm(neighborhood_map_data[i]["distance"]["avg"]) + " meters" +"</div>"
+                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to responding fire station:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getMetersFromKm(neighborhood_map_data[i]["distance"]["avg"]) + " meters" +"</div>"
 
-                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ratio of late response time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getPercentage(neighborhood_map_data[i]["late-ratio"]) + "%" + "</div>"
+                        + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ratio of late response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>"  + getPercentage(neighborhood_map_data[i]["late-ratio"]) + "%" + "</div>"
 
-                        + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ratio of critically late response time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getPercentage(neighborhood_map_data[i]["verylate-ratio"]) + "%" + "</div>"
+                        + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ratio of critically late response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>"  + getPercentage(neighborhood_map_data[i]["verylate-ratio"]) + "%" + "</div>"
 
                         + "<div style='margin-bottom: 10px'><strong style='margin-right: 6px'>" + "Additional info:" + "</strong></div>";
 

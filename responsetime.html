@@ -11,11 +11,10 @@
         <link rel="stylesheet" href="style/skeleton.css">
     </head>
     <body>
+        <h1 >Fire Department Calls for Service</h1>
         <div class='container'>
-           
             <div class='row'>
                 <div class='twelve columns exercise-view'>
-                    <h1 >Fire Department Calls for Service</h1>
                     <h4 >Analyses of the response time of the San Francisco fire department</h4>
 
                     <div class="visual-container"> 
@@ -66,6 +65,7 @@
 
             var response_times;
             var primaryColor = "rgba(135,206,235,1)";
+            var secondaryColor = "rgba(226,153,147,1)";
 
             var button_chosen_cluster1 = "combined";
             var button_chosen_cluster2 = "overall";
@@ -110,13 +110,13 @@
                         .html(function(d) {
                             return "<div style='margin: 0px 0px 15px 0px; text-align:center';><strong style='margin-right: 6px'>" +d['hood'] + "</strong></div>"
 
-                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average respond time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + minutes_from_seconds(d["response"]["avg"]) + "</div>"
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average respond time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + minutes_from_seconds(d["response"]["avg"]) + "</div>"
 
-                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to nearest fire station:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getMetersFromKm(d["distance"]["avg"]) + " meters" +"</div>"
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to nearest fire station:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getMetersFromKm(d["distance"]["avg"]) + " meters" +"</div>"
 
-                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ration of late responds time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getPercentage(d["late-ratio"]) + "%" + "</div>"
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ration of late responds time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getPercentage(d["late-ratio"]) + "%" + "</div>"
 
-                            + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ration of critically late responds time:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + getPercentage(d["verylate-ratio"]) + "%" + "</div>"
+                            + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ration of critically late responds time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getPercentage(d["verylate-ratio"]) + "%" + "</div>"
                         });
                     
 
