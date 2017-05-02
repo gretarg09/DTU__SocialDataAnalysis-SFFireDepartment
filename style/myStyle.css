@@ -26,9 +26,14 @@ h4{
   padding-bottom: 0.5em;
 }
 
+.banner-btns{
+  color: black;
+}
+
 .page_button_chosen{
   border-width: 1.5px;
   border-color: black;
+  color: rgba(208,85,75,1);
 }
 
 h2 {
