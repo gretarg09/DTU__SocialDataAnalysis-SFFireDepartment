@@ -36,6 +36,11 @@ h4{
   color: rgba(208,85,75,1);
 }
 
+.color-scale-div{
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
 h2 {
     padding-top:0em;
     padding-bottom: 1em;
@@ -145,7 +150,13 @@ position: absolute;
 .color-scale-span{
     display:inline-block;
     vertical-align: middle; 
-    font-size: 0.8em;
+    font-size: 0.7em;
+}
+
+.color-scale-text{
+    display:inline-block;
+    vertical-align: middle; 
+    font-size: 0.7em;
 }
 
 .neighborhood-title{
@@ -156,4 +167,43 @@ position: absolute;
     margin-top: 40px
 }
 
+@keyframes blink {
+  0% {
+       opacity: 0
+  }
+  50% {
+      opacity: 1
+  }
+  100% {
+      opacity: 0
+  }
+}
+@-webkit-keyframes blink {
+  0% {
+     opacity: 0
+  }
+  50% {
+     opacity: 1
+  }
+  100% {
+     opacity: 0
+  }
+}
+
+#active {
+  -moz-transition:all 0.5s ease-in-out;
+  -webkit-transition:all 0.5s ease-in-out;
+  -o-transition:all 0.5s ease-in-out;
+  -ms-transition:all 0.5s ease-in-out;
+  transition:all 0.5s ease-in-out;
+
+  -moz-animation:blink normal 2s infinite ease-in-out;
+  /* Firefox */
+  -webkit-animation:blink normal 2s infinite ease-in-out;
+  /* Webkit */
+  -ms-animation:blink normal 2s infinite ease-in-out;
+  /* IE */
+  animation:blink normal 2s infinite ease-in-out;
+  /* Opera */
+}
 

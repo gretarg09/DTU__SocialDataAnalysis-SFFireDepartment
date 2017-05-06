@@ -50,36 +50,36 @@
             <div class='row'>
                 <div class='overlapping twelve columns exercise-view'>
                      
-                    <div style="text-align:left;">
-                        <div>
-                            <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(208,85,75,1)" stroke="rgba(128, 128, 128, 1.0)" stroke-width="1"/>
+                    <div style="text-align:left; margin-bottom:0">
+                        <div class="color-scale-div">
+                            <svg width="30" height="20" > 
+                                <rect x="0" y="0" width="20" height="20" fill="rgba(208,85,75,1)" stroke="rgba(128, 128, 128, 1.0)" stroke-width="1"/>
                             </svg>
-                             <span class="color-scale-span" id="scale_text1"> Avg. response time <= 8 min </span>
+                             <text y="10" class="color-scale-span" id="scale_text1"> Avg. response time >= 8 min </text>
                         </div>
 
-                        <div>
-                            <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(226,153,147,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
+                        <div class="color-scale-div">
+                            <svg width="30" height="20" > 
+                                <rect x="0" y="0" width="20" height="20" fill="rgba(226,153,147,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
                             </svg>
 
-                             <span class="color-scale-span" id="scale_text2"> 7 min =< Avg. response time < 8 min</span>
+                             <text class="color-scale-span" id="scale_text2"> 7 min =< Avg. response time < 8 min</text>
                         </div>
 
-                        <div>
-                            <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(226,234,154,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
+                        <div class="color-scale-div">
+                            <svg width="30" height="20" > 
+                                <rect x="0" y="0" width="20" height="20" fill="rgba(226,234,154,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
                             </svg>
 
-                             <span class="color-scale-span" id="scale_text3"> 6 min =< Avg. response time < 7 min </span>
+                             <text class="color-scale-span" id="scale_text3"> 6 min =< Avg. response time < 7 min </text>
                         </div>
 
-                        <div >
-                            <svg width="40" height="25" > 
-                                <rect x="0" y="0" width="20" height="25" fill="rgba(242,246,211,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
+                        <div class="color-scale-div">
+                            <svg width="30" height="20" > 
+                                <rect x="0" y="0" width="20" height="20" fill="rgba(242,246,211,1)" stroke="rgba(128, 128, 128, 1)" stroke-width="1"/>
                             </svg>
 
-                             <span class="color-scale-span" id="scale_text4"> Avg. response time < 6 min </span>
+                             <text class="color-scale-span" id="scale_text4"> Avg. response time < 6 min </text>
                         </div>
                     </div>
                 </div>
@@ -95,8 +95,15 @@
 
                 <div class='twelve columns exercise-view'>
                     <div class="visual-container"> 
+                        <div class="row">
+                            <div class="ten columns">
+                                <div id="area1"></div>   
+                            </div>
+                            <div class="two columns" style="z-index=1000">
+                                <div  id="area1_stack"></div>   
+                            </div>
+                        </div>
 
-                        <div id="area1"></div> 
 
                         <div class='visual-buttons'> 
                             <button id="y2012" class="button_geo button_geo2 visual-button">2012</button>
@@ -150,6 +157,9 @@
             //var map_color = ["rgba(230,230,230,1)", "rgba(255,69,0, 0.4)", "rgba(255,69,0, 0.6)","rgba(255,69,0,0.8)"]
             //var map_color = ["rgba(230,230,230,1)", "rgba(179,179,179,1)", "rgba(153,153,153,1)","rgba(128,128,128,1)"]
 
+
+            // GEO PLOT SETUP
+
             //Yellow to red map color
             var map_color = ["rgba(242,246,211,1)","rgba(226,234,154,1)", "rgba(226,153,147,1)","rgba(208,85,75,1)"];
 
@@ -163,18 +173,6 @@
 
             var path = d3.geo.path()
                 .projection(projection);
-
-            //Define quantize scale to sort data values into buckets of color
-            var color = d3.scale.quantize()
-                .domain(d3.range(6))
-                // dark green, burgendy, dark blue, mustart yellow, dark grey, sky blue
-                .range(["#003C00","#800020","#210860","#999900","#666666","#87ceeb"]);
-
-            //Define quantize scale to sort data values into buckets of color for mean value data points
-            var mean_color = d3.scale.quantize()
-                .domain(d3.range(6))
-                // dark green, burgendy, dark blue, mustart yellow, dark grey, sky blue
-                .range(["#326232","#99324c","#63528f","#b7b74c","#757575","#abdcf1"]);
 
             //Create SVG element
             var svg = d3.select("#area1")
@@ -207,6 +205,8 @@
               });
             svg.call(tip_firestations);  
 
+
+            // HISTOGRAM SETUP
             // create histogram for each hour
             var margin = {top: 40, right: 20, bottom: 50, left: 60},
             width = 960 - margin.left - margin.right,
@@ -248,10 +248,150 @@
             svg1_histo.append("text")
                 .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
                 .attr("transform", "translate("+ (width/2) +","+ (height + margin.bottom - 3) +")")  // centre below axis
-                .text("Hour of the day");
+                .text("Response time per hour of the day");
 
             svg1_histo.call(tip);
 
+            // STACK LAYOUT SETUP
+
+            //var colors_stack = ["rgba(242,246,211,1)","rgba(226,234,154,1)", "rgba(226,153,147,1)","rgba(208,85,75,1)"];
+            var colors_stack = ["rgba(226,234,154,1)","rgba(226,153,147,1)","rgba(208,85,75,1)"];
+
+            var data_stack = [
+                {steps: 'Response t. distribution', A: 0.1, B: 0.7, C: 0.2},
+            ];
+             
+            var xData = ["A", "B", "C"];
+             
+            var width_stack = 140 - margin.left - margin.right;
+            var height_stack = 380 - margin.top - margin.bottom;
+            var margin_stack = {top: h-height_stack-45, right: 40, bottom: 30, left: 40};
+             
+            var x_stack = d3.scale.ordinal()
+                    .rangeRoundBands([0, width_stack], .35);
+             
+            var y_stack = d3.scale.linear()
+                    .rangeRound([height_stack, 0]);
+             
+            //var color = d3.scale.category20();
+             
+            var xAxis_stack = d3.svg.axis()
+                    .scale(x_stack)
+                    .orient("bottom");
+             
+            var svg_stack = d3.select("#area1_stack")
+                    .append("svg")
+                    .attr("width", width_stack + margin_stack.left + margin_stack.right)
+                    .attr("height", height_stack + margin_stack.top + margin_stack.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin_stack.left + "," + margin_stack.top + ")");
+             
+            var dataIntermediate = xData.map(function (c) {
+                return data_stack.map(function (d) {
+                    return {x: d.steps, y: d[c]};
+                });
+            });
+             
+            var dataStackLayout = d3.layout.stack()(dataIntermediate);
+             
+            x_stack.domain(dataStackLayout[0].map(function (d) {
+                return d.x;
+            }));
+             
+            y_stack.domain([0,
+                d3.max(dataStackLayout[dataStackLayout.length - 1],
+                        function (d) { return d.y0 + d.y;})
+                ])
+              .nice();
+             
+            var layer = svg_stack.selectAll(".stack")
+                    .data(dataStackLayout)
+                    .enter().append("g")
+                    .attr("class", "stack")
+                    .style("fill", function (d, i) {
+                        return colors_stack[i];
+                    });
+             
+            layer.selectAll("rect")
+                    .data(function (d) {
+                        return d;
+                    })
+                    .enter().append("rect")
+                    .attr("x", function (d) {
+                        return x_stack(d.x);
+                    })
+                    .attr("y", function (d) {
+                        return y_stack(d.y + d.y0);
+                    })
+                    .attr("height", function (d) {
+                        return y_stack(d.y0) - y_stack(d.y + d.y0);
+                    })
+                    .attr("width", x_stack.rangeBand());
+             
+            svg_stack.append("g")
+                    .attr("class", "axis")
+                    .attr("transform", "translate(0," + height_stack + ")")
+                    .call(xAxis_stack);
+
+            
+            svg_stack.selectAll("text")
+                .data(dataStackLayout)
+                .enter()
+                .append("text")
+                .attr("class","stack-layout-text")
+                .text(function(d,i) {
+                    var total_percentage;
+                    if(i==1){
+                        total_percentage = data_stack[0]["A"];
+                    }
+                    else{
+                        total_percentage = data_stack[0]["A"] + data_stack[0]["B"];
+                    }
+
+                    return "--" + total_percentage * 100 + "%";
+                })
+                .attr("x", function(d,i) {
+                    console.log(i);
+                    return width_stack - 10;
+                })
+                .attr("y", function(d,i) {
+                    var text_y = y_stack(d[0].y0) 
+                    return text_y;
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "10px")
+                .attr("fill", "#000000");
+
+
+            // Draw legend
+            var legend = svg.selectAll(".legend")
+              .data(colors_stack)
+              .enter().append("g")
+              .attr("class", "legend")
+              .attr("transform", function(d, i) { return "translate(" + -65 + "," + (h-height_stack - 120 + (i * 19)) + ")"; });
+             
+            legend.append("rect")
+              .attr("x", width - 18)
+              .attr("width", 18)
+              .attr("height", 18)
+              .style("fill", function(d, i) {return colors_stack.slice().reverse()[i];});
+             
+            legend.append("text")
+              .attr("x", width + 5)
+              .attr("y", 18/2)
+              .attr("dy", ".35em")
+              .attr("class","color-scale-text")
+              .style("text-anchor", "start")
+              .text(function(d, i) { 
+                switch (i) {
+                  case 0: return "% of critically late response t.";
+                  case 1: return "% of late response t.";
+                  case 2: return "% of acceptable response t.";
+                }
+              });
+
+
+            // READING IN DATA
             d3.json("Notebook/Data/response_time_groups_nltfree.json", function(error,json) {
                 if (error) {  //If error is not null, something went wrong.
                     console.log(error);  //Log the error.
@@ -290,7 +430,7 @@
                                 console.log(error);  //Log the error.
                             } 
                             else {  
-                                //console.log(json);
+                                console.log(json);
                                 neighborhoods_statistic = json;
                             }   
                         });
@@ -303,7 +443,7 @@
                                 // Set color on kmeans_p
                                 var button_ID = d3.select(this).attr("id");
                                 geo_button_chosen = button_ID
-                                console.log(button_ID);
+                                //console.log(button_ID);
 
                                 setcolor_button(button_ID,1);
 
@@ -347,7 +487,7 @@
                 //Load in GeoJSON data
                 //Bind data and create one path per GeoJSON feature
                 //console.log(json_data);
-                console.log(json_data);
+                //console.log(json_data);
                 svg.selectAll("path")
                     .data(json_data.features)
                     .enter()
@@ -377,7 +517,7 @@
                     })
                     .attr('stroke',function(d,i){
                         if(i == 41){
-                            console.log("running inside 41");
+                            //console.log("running inside 41");
                             //return primaryColor;
                             return "#000000";
                         }
@@ -403,10 +543,13 @@
                         if(i == 41){
                             return getColor_district(neighborhood_chosen_index);
                         }
+                        else if (i==neighborhood_chosen_index){
+                           return "rgba(255,255,255,0.65)";
+                        }
                         else{
                             return getColor_district(i);
                         }
-                    })
+                    });
             }
 
             function remove_extra_feature_geo(){
@@ -423,14 +566,14 @@
             }
 
             function update_geo_when_clicked(){
-                console.log("running inside update geo when clicked");
+                //console.log("running inside update geo when clicked");
  
                 //remove_geo_graph();
                 // Because we want to color the outline of one neighborhood in front of the others we add another feature
                 // to the geojson data. We then need to recolor the firestations onto the map.
 
-                console.log("neighborhood chosen");
-                console.log(neighborhood_chosen_index);
+                //console.log("neighborhood chosen");
+                //console.log(neighborhood_chosen_index);
 
                 remove_extra_feature_geo();
 
@@ -451,12 +594,14 @@
                         if(i == 41){
                             remove_extra_feature_geo();
                             update_neighborhood(-1);
+                            update_geo();
                         }
                         else{
                             update_neighborhood(i);
                             update_geo_when_clicked();
                         }
 
+                        update_stack_histogram();
                         update_hourly_histogram();
 
                         //update_geo();
@@ -472,7 +617,7 @@
                     })
                     .attr('stroke',function(d,i){
                         if(i == 41){
-                            console.log("running inside 41");
+                            //console.log("running inside 41");
                             //return primaryColor;
                             return "#000000";
                         }
@@ -482,13 +627,15 @@
                     })
                     .attr('fill', function(d,i){
                         if(i == 41){
-                            return getColor_district(neighborhood_chosen_index);
+                            //return getColor_district(neighborhood_chosen_index);
+                            return "rgba(255,255,255,0.65)";
                         }
                         else{
                             return getColor_district(i);
                         }
                     })
-                    .attr('class','mapDistrict');
+                    .attr('class','mapDistrict')
+                    .attr('id','active');
 
                 //We need to delete the firestatio circles and the corresponding text and creating them again.
                 delete_FireStation_circles();
@@ -502,6 +649,7 @@
                     .data([]);   
 
                 var text = svg.selectAll("text")
+                    .filter(".labels")
                     .data([]);
 
                 circle.exit()
@@ -556,8 +704,6 @@
             // Create the hourly Histagram for the neighborhoods
             function create_hourly_histogram()
             {
-
-
                 var hood_data;
 
                 if(neighborhood_chosen_index == -1){
@@ -598,22 +744,24 @@
                     .on('mouseout', tip.hide);
             }
 
-            // Update the hourly Histogram with information about a specific neighborhood
+            // Update the hourly Histogram with information on hood or year changes
             function update_hourly_histogram()
             {
 
                 var hood_data;
 
                 if(neighborhood_chosen_index == -1){
-                    //TODO set the data for whole San Francisco here
+                    //This means that San Francisco is chosen 
+                    key =  "sanfran" +  filter_yearbutton_id(geo_button_year_chosen);
+
                     hood_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                 }
                 else{
                     hood_data = neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"];
                 }
 
-                console.log("hood data:");
-                console.log(hood_data);
+                //console.log("hood data:");
+                //console.log(hood_data);
 
                 //Update all rects
                 var bar = svg1_histo.selectAll("rect")
@@ -627,14 +775,86 @@
                     .attr("height", function(d) { return height - yScale(d); })
             }
 
+            // Update the stack histogram when information on hood or year changes
+            function update_stack_histogram (){
+
+                var data_stack_update = [
+                    {steps: 'Response time', A: 0.55, B: 0.20, C: 0.25},
+                ];
+             
+                var dataIntermediate_update = xData.map(function (c) {
+                    return data_stack_update.map(function (d) {
+                        return {x: d.steps, y: d[c]};
+                    });
+                });
+                 
+                var dataStackLayout_update = d3.layout.stack()(dataIntermediate_update);
+                 
+                x_stack.domain(dataStackLayout_update[0].map(function (d) {
+                    return d.x;
+                }));
+                 
+                y_stack.domain([0,
+                    d3.max(dataStackLayout_update[dataStackLayout_update.length - 1],
+                            function (d) { return d.y0 + d.y;})
+                    ])
+                  .nice();
+
+                var layer = svg_stack.selectAll(".stack")
+                    .data(dataStackLayout_update);
+
+                layer.selectAll("rect")
+                    .data(function (d) {
+                        //console.log(d);
+                        return d;
+                    })
+                    .transition()
+                    .duration(500)
+                    .attr("y", function (d) {
+                        //console.log(d.y + d.y0);
+                        return y_stack(d.y + d.y0);
+                    })
+                    .attr("height", function (d) {
+                        return y_stack(d.y0) - y_stack(d.y + d.y0);
+                    })
+                    .attr("width", x_stack.rangeBand());
+
+                svg_stack.selectAll("text")
+                    .filter(".stack-layout-text")
+                    .data(dataStackLayout_update)
+                    .transition()
+                    .duration(500)
+                    .text(function(d,i) {
+                        var total_percentage;
+                        if(i==0){
+                            total_percentage = data_stack_update[0]["A"];
+                        }
+                        else{
+                            total_percentage = data_stack_update[0]["A"] + data_stack_update[0]["B"];
+                        }
+                        return "--" + Math.round(total_percentage * 100) + "%";
+                    })
+                    .attr("y", function(d,i) {
+                        //console.log(d[0].y0);
+                        var text_y = y_stack(d[0].y0 + d[0].y) 
+                        return text_y;
+                    })
+
+
+                   
+                   // console.log("Updating stack histogram");
+
+
+            };
+
 
             function update_data(){
-                console.log(geo_button_year_chosen);
+                //console.log(geo_button_year_chosen);
                 var key = "combined" +  filter_yearbutton_id(geo_button_year_chosen);
-                console.log(key);
+                //console.log(key);
                 neighborhood_map_data = neighborhood_map_data_overall[key];
-                console.log("neighborhood map data chosen");
-                console.log(neighborhood_map_data);
+                //console.log("neighborhood map data chosen");
+                //console.log(neighborhood_map_data);
             }
 
             function update_neighborhood(index){
@@ -650,7 +870,7 @@
             // Get color for an district based on corresponding average respond time
             function getColor_district(index){
                 if(geo_button_chosen == "geo_button1"){
-                    console.log(index);
+                    //console.log(index);
                     var respondtime = Math.round(neighborhood_map_data[index]["response"]["avg"]);
                     if(respondtime >= 480){
                         return map_color[3];
@@ -730,25 +950,25 @@
                 var text4;
 
                 if(geo_button_chosen == "geo_button1"){
-                    text1 = "Avg. response time <= 8 min";
+                    text1 = "Avg. response time >= 8 min";
                     text2 = "7 min =< Avg. response time < 8 min";
                     text3 = "6 min =< Avg. response time < 7 min";
                     text4 = "Avg. response time < 6 min";
                 }
                 else if (geo_button_chosen == "geo_button2"){
-                    text1 = "Avg. distance to firestation <= 1500 m";
+                    text1 = "Avg. distance to firestation >= 1500 m";
                     text2 = "1000 m <= Avg. distance to firestation < 1500 m";
                     text3 = "500 m <= Avg. distance to firestation < 1000 m";
                     text4 = "Avg. distance to firestation < 500 m";
                 }
                 else if (geo_button_chosen == "geo_button3"){
-                    text1 = "Ratio of late responses <= 10%";
+                    text1 = "Ratio of late responses >= 10%";
                     text2 = "7,5% <= Ratio of late responses < 10%";
                     text3 = "5% <= Ratio of late respones < 7,5%";
                     text4 = "Ratio of late responses < 5%";
                 }
                 else if (geo_button_chosen == "geo_button4"){
-                    text1 = "Ratio of critically late responses <= 10%";
+                    text1 = "Ratio of critically late responses >= 10%";
                     text2 = "7,5% <= Ratio of critically late responses < 10%";
                     text3 = "5% <= Ratio of critically late respones < 7,5%";
                     text4 = "Ratio of critically late responses < 5%";
