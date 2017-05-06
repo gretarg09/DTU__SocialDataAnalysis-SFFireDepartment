@@ -71,7 +71,8 @@ h6 {
 }
 
 .mapDistrict:hover {
-    fill:#CCCCCC;
+    /*fill:#CCCCCC;*/
+    opacity:0.5;
 }
 
 .bar {

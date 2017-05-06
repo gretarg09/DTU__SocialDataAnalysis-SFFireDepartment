@@ -265,7 +265,7 @@
              
             var width_stack = 140 - margin.left - margin.right;
             var height_stack = 380 - margin.top - margin.bottom;
-            var margin_stack = {top: h-height_stack-45, right: 40, bottom: 30, left: 40};
+            var margin_stack = {top: h-height_stack-45, right: 50, bottom: 30, left: 50};
              
             var x_stack = d3.scale.ordinal()
                     .rangeRoundBands([0, width_stack], .35);
@@ -390,7 +390,6 @@
                 }
               });
 
-
             // READING IN DATA
             d3.json("Notebook/Data/response_time_groups_nltfree.json", function(error,json) {
                 if (error) {  //If error is not null, something went wrong.
@@ -405,6 +404,10 @@
                     update_neighborhood(neighborhood_chosen_index);
 
                     create_hourly_histogram();
+
+                    // We call update on these graphs to initialize the data
+                    update_stack_histogram();
+                    update_hourly_histogram();
 
                     //Load in GeoJSON data
                     d3.json("Notebook/Data/Analysis Neighborhoods.geojson", function(json){
@@ -423,7 +426,6 @@
                                 create_FireStation_circles(fire_stations);
                             }   
                         });
-
 
                         d3.json("Notebook/Data/neighborhood_statistic.json", function(error,json) {
                             if (error) {  //If error is not null, something went wrong.
@@ -466,6 +468,7 @@
                                 //update_geo_when_clicked();
                                 update_scale_txt();
                                 update_hourly_histogram();
+                                update_stack_histogram();
 
                                 //update_geo();
                                 //update_scale_txt();
@@ -504,6 +507,7 @@
                         }
                         update_geo_when_clicked();
                         update_hourly_histogram();
+                        update_stack_histogram();
                         //update_geo();
                     })
                     .on('mouseout', tip_neighborhoods.hide)
@@ -603,6 +607,7 @@
 
                         update_stack_histogram();
                         update_hourly_histogram();
+                        update_stack_histogram();
 
                         //update_geo();
                     })
@@ -640,6 +645,9 @@
                 //We need to delete the firestatio circles and the corresponding text and creating them again.
                 delete_FireStation_circles();
                 create_FireStation_circles(fire_stations);
+
+                // We also need to recolor the district that was chosen earlier
+                update_geo();
             }
 
             // Delete fire station circles
@@ -714,7 +722,6 @@
                     hood_data = neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"];
                 }
 
-
                 svg1_histo.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + height + ")")
@@ -752,16 +759,12 @@
 
                 if(neighborhood_chosen_index == -1){
                     //This means that San Francisco is chosen 
-                    key =  "sanfran" +  filter_yearbutton_id(geo_button_year_chosen);
-
-                    hood_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                    var key_sanfran =  "sanfran" +  filter_yearbutton_id(geo_button_year_chosen);
+                    hood_data = neighborhood_map_data_overall[key_sanfran]["response"]["hourly"];
                 }
                 else{
                     hood_data = neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"];
                 }
-
-                //console.log("hood data:");
-                //console.log(hood_data);
 
                 //Update all rects
                 var bar = svg1_histo.selectAll("rect")
@@ -778,8 +781,34 @@
             // Update the stack histogram when information on hood or year changes
             function update_stack_histogram (){
 
+                // First we need to extract the correct data
+                var hood_data_stack;
+
+                if(neighborhood_chosen_index == -1){
+                    //This means that San Francisco is chosen 
+                    var key_sanfran =  "sanfran" +  filter_yearbutton_id(geo_button_year_chosen);
+                    hood_data_stack = neighborhood_map_data_overall[key_sanfran];
+                }
+                else{
+                    hood_data_stack = neighborhood_map_data[neighborhood_chosen_index];
+                }
+
+                console.log(hood_data_stack);
+                console.log(hood_data_stack["late-ratio"]);
+                console.log(hood_data_stack["verylate-ratio"]);
+                console.log(hood_data_stack["distance"]);
+
+                var ABC = [
+                    1 - hood_data_stack['late-ratio'],
+                    hood_data_stack['late-ratio'] - hood_data_stack['verylate-ratio'],
+                    hood_data_stack['verylate-ratio']
+                ];
+
+                console.log("ABC");
+                console.log(ABC);
+
                 var data_stack_update = [
-                    {steps: 'Response time', A: 0.55, B: 0.20, C: 0.25},
+                    {steps: 'Response time', A: ABC[0], B: ABC[1], C: ABC[2]},
                 ];
              
                 var dataIntermediate_update = xData.map(function (c) {
@@ -839,12 +868,6 @@
                         var text_y = y_stack(d[0].y0 + d[0].y) 
                         return text_y;
                     })
-
-
-                   
-                   // console.log("Updating stack histogram");
-
-
             };
 
 
@@ -1041,13 +1064,13 @@
                     else {
                         return additional_info_html
                         
-                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Population:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + neighborhoods_statistic[i]['total_population'] + " inhabitants" + "</span>  </div>"
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Population:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['total_population'] + " inhabitants" + "</span>  </div>"
 
-                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Population density:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + neighborhoods_statistic[i]['people_density'] + " per square mile"  + "</span>  </div>"
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Population density:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['people_density'] + " per square mile"  + "</span>  </div>"
 
-                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Area:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + neighborhoods_statistic[i]['area'] + " square miles" + "</span>  </div>"
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Area:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['area'] + " square miles" + "</span>  </div>"
 
-                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Median household income:" + "</span></strong> <span style='color:rgba(135,206,235,1)'>" + "$ "+ neighborhoods_statistic[i]['household_income'] + "</span> <span class='tipperCol' >" + "</span>   </div>";
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Median household income:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + "$ "+ neighborhoods_statistic[i]['household_income'] + "</span> <span class='tipperCol' >" + "</span>   </div>";
                     }
             }
 
