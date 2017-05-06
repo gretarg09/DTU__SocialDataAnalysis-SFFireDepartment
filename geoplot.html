@@ -258,7 +258,7 @@
             var colors_stack = ["rgba(226,234,154,1)","rgba(226,153,147,1)","rgba(208,85,75,1)"];
 
             var data_stack = [
-                {steps: 'Response t. distribution', A: 0.1, B: 0.7, C: 0.2},
+                {steps: 'Response t. distribution', A: 1, B: 0, C: 0},
             ];
              
             var xData = ["A", "B", "C"];
@@ -417,7 +417,7 @@
                         createSFPDmap(json);
 
                         d3.json("Notebook/Data/fire_station.json", function(error,json) {
-                            if (error) {  //If error is not null, something went wrong.
+                            if (error) {  //If error is not null, something went wronsg.
                                 console.log(error);  //Log the error.
                             } 
                             else {  
