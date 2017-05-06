@@ -82,8 +82,16 @@
                              <span class="color-scale-span" id="scale_text4"> Avg. response time < 6 min </span>
                         </div>
                     </div>
+                </div>
+
+               <div class='overlapping twelve columns exercise-view'>
+
+                    <div class="overlapping2">
+                        <span id="h2_neighborhood">Responsive geoplot</span>
+                    </div>
 
                 </div>
+
 
                 <div class='twelve columns exercise-view'>
                     <div class="visual-container"> 
@@ -97,9 +105,6 @@
                             <button id="y2015" class="button_geo button_geo2 visual-button">2015</button>
                             <button id="y2016" class="button_geo button_geo2 visual-button">2016</button>
                             <button id="yoverall" class="button_geo button_geo2 visual-button">All</button>
-                        </div>
-                        <div class="overlapping2">
-                            <span id="h2_neighborhood">Responsive geoplot</span>
                         </div>
 
                          <div id="area1_histo"></div> 
@@ -137,7 +142,7 @@
             var geo_button_chosen = "geo_button1";
             var geo_button_year_chosen = "yoverall";
 
-            var neighborhood_chosen_index = 0;
+            var neighborhood_chosen_index = -1;
 
             setcolor_button(geo_button_chosen,1);
             setcolor_button(geo_button_year_chosen,2);
@@ -302,7 +307,8 @@
 
                                 setcolor_button(button_ID,1);
 
-                                update_geo_when_clicked();
+                                //update_geo_when_clicked();
+                                update_geo();
                                 update_scale_txt();
                             });
 
@@ -316,7 +322,8 @@
                                 setcolor_button(button_ID,2);
 
                                 update_data();
-                                update_geo_when_clicked();
+                                update_geo();
+                                //update_geo_when_clicked();
                                 update_scale_txt();
                                 update_hourly_histogram();
 
@@ -348,17 +355,43 @@
                     .attr("d", path)
                     .on('mouseover', tip_neighborhoods.show)
                     .on("click", function(d,i){
-                        update_neighborhood(i);
-                        update_hourly_histogram();
+                        if(i == 41){
+                            remove_extra_feature_geo();
+                            //update_neighborhood(neighborhood_chosen_index);
+                        }
+                        else{
+                            update_neighborhood(i);
+                        }
                         update_geo_when_clicked();
+                        update_hourly_histogram();
+                        //update_geo();
                     })
                     .on('mouseout', tip_neighborhoods.hide)
-                    .attr('stroke-width',1)
+                    .attr('stroke-width', function(d,i){
+                        if(i == 41){
+                            return 1;
+                        }
+                        else {
+                            return 0.6;
+                        }
+                    })
                     .attr('stroke',function(d,i){
-                        return "#626262";
+                        if(i == 41){
+                            console.log("running inside 41");
+                            //return primaryColor;
+                            return "#000000";
+                        }
+                        else {
+                            return "#626262";
+                        }
                     })
                     .attr('fill', function(d,i){
-                        return getColor_district(i);
+                        if(i == 41){
+                            return getColor_district(neighborhood_chosen_index);
+                        }
+                        else{
+                            return getColor_district(i);
+                        }
                     })
                     .attr('class','mapDistrict');
             }
@@ -367,38 +400,47 @@
             function update_geo(){
                 var paths =  svg.selectAll("Path")
                 paths.attr('fill', function(d,i){
-                        return getColor_district(i);
+                        if(i == 41){
+                            return getColor_district(neighborhood_chosen_index);
+                        }
+                        else{
+                            return getColor_district(i);
+                        }
                     })
             }
 
-            function remove_geo_graph()
-            {
-                // First we delete all paths and then we recreate the paths 
-                var paths = svg.selectAll("path")
-                    .data([]);  
+            function remove_extra_feature_geo(){
+                // first we remove the previouse chosen hood
+                if(geojson.features.length > 41){
+                    geojson.features.pop();
+                }
 
+                // We remove the paths for previouse chosen hood
+                var paths = svg.selectAll("path")
+                    .data(geojson.features)
                 paths.exit()
                     .remove();
             }
 
             function update_geo_when_clicked(){
                 console.log("running inside update geo when clicked");
-
-                 remove_geo_graph();
+ 
+                //remove_geo_graph();
                 // Because we want to color the outline of one neighborhood in front of the others we add another feature
                 // to the geojson data. We then need to recolor the firestations onto the map.
 
                 console.log("neighborhood chosen");
                 console.log(neighborhood_chosen_index);
 
-                if(geojson.features.length > 41){
-                    geojson.features.pop();
-                }
+                remove_extra_feature_geo();
 
+                // Get the chosen neighborhood's feature
                 var feature = geojson.features[neighborhood_chosen_index];
                 geojson.features.push(feature);   
                 console.log(geojson);
 
+
+                // Update the geograph
                 svg.selectAll("path")
                     .data(geojson.features)
                     .enter()
@@ -407,13 +449,16 @@
                     .on('mouseover', tip_neighborhoods.show)
                     .on("click", function(d,i){
                         if(i == 41){
-                            update_neighborhood(neighborhood_chosen_index);
+                            remove_extra_feature_geo();
+                            update_neighborhood(-1);
                         }
                         else{
                             update_neighborhood(i);
+                            update_geo_when_clicked();
                         }
-                        update_geo_when_clicked();
+
                         update_hourly_histogram();
+
                         //update_geo();
                     })
                     .on('mouseout', tip_neighborhoods.hide)
@@ -511,6 +556,19 @@
             // Create the hourly Histagram for the neighborhoods
             function create_hourly_histogram()
             {
+
+
+                var hood_data;
+
+                if(neighborhood_chosen_index == -1){
+                    //TODO set the data for whole San Francisco here
+                    hood_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                }
+                else{
+                    hood_data = neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"];
+                }
+
+
                 svg1_histo.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + height + ")")
@@ -528,7 +586,7 @@
                     .text("time (sek)");
 
                 svg1_histo.selectAll(".bar")
-                    .data(neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"])
+                    .data(hood_data)
                     .enter()
                     .append("rect")
                     .attr("class", "bar")
@@ -543,9 +601,23 @@
             // Update the hourly Histogram with information about a specific neighborhood
             function update_hourly_histogram()
             {
+
+                var hood_data;
+
+                if(neighborhood_chosen_index == -1){
+                    //TODO set the data for whole San Francisco here
+                    hood_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                }
+                else{
+                    hood_data = neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"];
+                }
+
+                console.log("hood data:");
+                console.log(hood_data);
+
                 //Update all rects
                 var bar = svg1_histo.selectAll("rect")
-                    .data(neighborhood_map_data[neighborhood_chosen_index]["response"]["hourly"])
+                    .data(hood_data)
 
                 bar.transition()
                     .duration(500)
@@ -567,7 +639,12 @@
 
             function update_neighborhood(index){
                 neighborhood_chosen_index = index;
-                document.getElementById('h2_neighborhood').innerHTML = neighborhood_map_data[neighborhood_chosen_index]["hood"];
+                if(index > -1){
+                    document.getElementById('h2_neighborhood').innerHTML = neighborhood_map_data[neighborhood_chosen_index]["hood"];
+                }
+                else{
+                    document.getElementById('h2_neighborhood').innerHTML = "San Francisco";
+                }
             }
 
             // Get color for an district based on corresponding average respond time
