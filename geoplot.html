@@ -39,7 +39,7 @@
                             
                         </p>
                         <p>
-                            Below we visualize the San Francisco area on a responsive geo plot. Each neighborhood is colored based on one of the following measures; neighborhood's average response time, average distance to responding fire station, ratio of late response time or ratio of critically late response time. Here like in the previous section the late response time is defined as over 10 minutes and critically late response time is defined as more than 20 minutes. On the left side of the geo plot you can see what each color corresponds to. 
+                            Below we visualize the San Francisco area on a responsive geo plot. Each neighborhood is colored based on one of the following measures; neighborhood's average response time, average distance to responding fire station, ratio of late response time or ratio of critically late response time. Here like in the previous section the late response time is defined as more than 10 minutes and critically late response time is defined as more than 20 minutes. On the left side of the geo plot you can see what each color corresponds to. 
 
                         </p>
                         <p>
@@ -196,7 +196,6 @@
 
 
             // GEO PLOT SETUP
-
             //Yellow to red map color
             var map_color = ["rgba(242,246,211,1)","rgba(226,234,154,1)", "rgba(226,153,147,1)","rgba(208,85,75,1)"];
 
@@ -290,7 +289,6 @@
             svg1_histo.call(tip);
 
             // STACK LAYOUT SETUP
-
             //var colors_stack = ["rgba(242,246,211,1)","rgba(226,234,154,1)", "rgba(226,153,147,1)","rgba(208,85,75,1)"];
             var colors_stack = ["rgba(226,234,154,1)","rgba(226,153,147,1)","rgba(208,85,75,1)"];
 
@@ -469,7 +467,7 @@
                             }   
                         });
 
-                        d3.json("Notebook/Data/neighborhood_statistic.json", function(error,json) {
+                        d3.json("Notebook/Data/neighborhood_info.json", function(error,json) {
                             if (error) {  //If error is not null, something went wrong.
                                 console.log(error);  //Log the error.
                             } 
@@ -1078,7 +1076,11 @@
 
                         + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Area:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['area'] + " square miles" + "</span>  </div>"
 
-                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Median household income:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + "$ "+ neighborhoods_statistic[i]['household_income'] + "</span> <span class='tipperCol' >" + "</span>   </div>";
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Median household income:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + "$ "+ neighborhoods_statistic[i]['household_income'] + "</span> <span class='tipperCol' >" + "</span>   </div>"
+
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "ratio of people below poverty level:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + getPercentage(Number(neighborhoods_statistic[i]['poverty_level'])) + "%" + "</span> <span class='tipperCol' >" + "</span>   </div>"
+
+                        + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "ratio of foreign born residents:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + getPercentage(neighborhoods_statistic[i]['foreign_born_residents']) + "%" + "</span> <span class='tipperCol' >" + "</span>   </div>";
                     }
             }
 

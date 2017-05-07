@@ -101,17 +101,18 @@
                 } 
                 else {      //If no error, the file loaded correctly. Yay!
                     console.log("respondtime groups");
-                    console.log(json);  //Log the data.
+                    //console.log(json);  //Log the data.
                     response_times = json;
 
                     // Reading in neighborhood info json
-                    d3.json("Notebook/Data/neighborhood_statistic.json", function(error,json) {
+                    d3.json("Notebook/Data/neighborhood_info.json", function(error,json) {
                         if (error) {  //If error is not null, something went wrong.
                             console.log(error);  //Log the error.
                         } 
                         else {  
                             console.log(json);
                             neighborhoods_statistic = json;
+                            console.log(json);
                         }   
                     });
 
@@ -165,7 +166,9 @@
 
                                 + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Area:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['area'] + " square miles" + "</span>  </div>"
 
-                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Median household income:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + "$ "+ neighborhoods_statistic[i]['household_income'] + "</span> <span class='tipperCol' >" + "</span>   </div>";
+                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "ratio of people below poverty level:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + getPercentage(Number(neighborhoods_statistic[i]['poverty_level'])) + "%" + "</span> <span class='tipperCol' >" + "</span>   </div>"
+
+                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "ratio of foreign born residents:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + getPercentage(neighborhoods_statistic[i]['foreign_born_residents']) + "%" + "</span> <span class='tipperCol' >" + "</span>   </div>";
                             }
                         });
                     
