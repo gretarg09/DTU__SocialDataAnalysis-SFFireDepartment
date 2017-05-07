@@ -15,11 +15,12 @@
         <div class='container'>
             <div class='row'>
                 <div class='twelve columns exercise-view'>
-                    <h4 >Analyses of the response time of the San Francisco fire department</h4>
+                    <h4 >Analyses of the response time of the San Francisco fire department </h4>
 
                     <div class="visual-container"> 
                         <div class='visual-buttons'> 
                             <a href="index.html"> <button id="page1_btn" class="visual-button banner-btns">Introduction</button></a>
+                            <a href="analysis.html"> <button id="page5_btn" class="visual-button banner-btns">Analysis</button></a>
                             <a href="responsetime.html"> <button id="page2_btn" class="visual-button banner-btns">Response time</button></a>
                             <a href="geoplot.html"><button id="page3_btn" class="visual-button page_button_chosen banner-btns">Geo plot</button></a>
                             <a href="machinelearning.html"><button id="page4_btn" class="visual-button banner-btns">Machine learning</button></a>
@@ -35,7 +36,31 @@
                     <h2>Responsive geoplot</h2>
 
                     <div id="Visualization1_text">
-                        <p>Below we visualize the San Francisco are on a responsive geoplot. Relevant </p>
+                        <p>
+                            
+                        </p>
+                        <p>
+                            Below we visualize the San Francisco area on a responsive geo plot. Each neighborhood is colored based on one of the following measures; neighborhood's average response time, average distance to responding fire station, ratio of late response time or ratio of critically late response time. Here like in the previous section the late response time is defined as over 10 minutes and critically late response time is defined as more than 20 minutes. On the left side of the geo plot you can see what each color corresponds to. 
+
+                        </p>
+                        <p>
+                            On the right side of the geo plot a stack histogram of the response time distribution can be found. It shows the ration of acceptable response times, late response times and critically late response times. You can get the response time distribution for each neighborhood by clicking on the neighborhood in the geo plot and you can see how it has evolved over the years by toggling the period buttons.
+                        </p>
+                        <p>
+                            Below the geo plot is a responsive histogram where you can find the average response time for each hour of the day. You can change the values of the histogram by choosing a neighborhood or choosing some specific period (or both). We will call this histogram the "hour of the day" histogram in the following discussions
+                        </p>
+                        <p>
+                            By hovering over the geo plot you can get further information about each neighborhood. You can select the neighborhood by pressing on it, when chosen the neighborhood will fade in and out. When you have chosen the neighborhood the stacked histogram on the right site and the "hour of the day" histogram under the geo plot will render information about the chosen neighborhood. You can then toggle the periods button to see how the values have changed over the years. You can un select the neighborhood by pressing on it again.
+                        </p>
+
+                        <p>
+                            Each fire station in San Francisco can also been seen in the geo plot. By hovering over the station you can see the station's address and what battalion it belongs to.
+                        </p>
+
+                        <p>
+                            Please feel free to spend as much time as you want playing around with this visualization. There is alot to see here.
+                        </p> 
+                        </br>
                     </div>
 
                     <div class='visual-buttons'> 
@@ -118,7 +143,20 @@
 
 
                         <div id="Visualization1_text" class="geoplot_result_text">
-                            <p> Hérna þurfum við að koma með einhverja skemmtilega niðurstöður úr visualizationinu. Túlka hlutina á skemmtilegan máta og koma meðo eitthað skemmtilegt  </p>
+
+                        <h5>Some thoughts</h5>
+
+                        <ul>
+                                <li>
+                                    interesting thing 1
+                                </li>
+                                <li>
+                                    interesting thing 2
+                                </li>
+                                <li>
+                                    interesting thing 3
+                                </li>
+                            </ul> 
                         </div>
 
                     </div>
@@ -285,6 +323,15 @@
                     .attr("height", height_stack + margin_stack.top + margin_stack.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin_stack.left + "," + margin_stack.top + ")");
+
+            var tip_stack = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-20, 0])
+                .html(function(d,i) {
+                    return "<p>"+ Math.round(d.y*100)+ "%" +"</p>";
+                });
+                
+            svg_stack.call(tip_stack);
              
             var dataIntermediate = xData.map(function (c) {
                 return data_stack.map(function (d) {
@@ -326,7 +373,9 @@
                     .attr("height", function (d) {
                         return y_stack(d.y0) - y_stack(d.y + d.y0);
                     })
-                    .attr("width", x_stack.rangeBand());
+                    .attr("width", x_stack.rangeBand())
+                    .on('mouseover', tip_stack.show)
+                    .on('mouseout', tip_stack.hide);
              
             svg_stack.append("g")
                     .attr("class", "axis")
@@ -351,7 +400,6 @@
                     return "--" + total_percentage * 100 + "%";
                 })
                 .attr("x", function(d,i) {
-                    console.log(i);
                     return width_stack - 10;
                 })
                 .attr("y", function(d,i) {
@@ -361,7 +409,6 @@
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "10px")
                 .attr("fill", "#000000");
-
 
             // Draw legend
             var legend = svg.selectAll(".legend")
@@ -396,9 +443,6 @@
                     console.log(error);  //Log the error.
                 } 
                 else {  
-                    console.log("neighborhood data:");
-                    console.log(json);
-
                     neighborhood_map_data_overall = json;
                     update_data();
                     update_neighborhood(neighborhood_chosen_index);
@@ -411,7 +455,6 @@
 
                     //Load in GeoJSON data
                     d3.json("Notebook/Data/Analysis Neighborhoods.geojson", function(json){
-                        //console.log(json);
                         //Bind data and create one path per GeoJSON feature
                         geojson = json;
                         createSFPDmap(json);
@@ -421,7 +464,7 @@
                                 console.log(error);  //Log the error.
                             } 
                             else {  
-                                //console.log(json);
+                                console.log(json);
                                 fire_stations = json;
                                 create_FireStation_circles(fire_stations);
                             }   
@@ -432,7 +475,6 @@
                                 console.log(error);  //Log the error.
                             } 
                             else {  
-                                console.log(json);
                                 neighborhoods_statistic = json;
                             }   
                         });
@@ -445,7 +487,6 @@
                                 // Set color on kmeans_p
                                 var button_ID = d3.select(this).attr("id");
                                 geo_button_chosen = button_ID
-                                //console.log(button_ID);
 
                                 setcolor_button(button_ID,1);
 
@@ -489,8 +530,6 @@
             function createSFPDmap(json_data) {
                 //Load in GeoJSON data
                 //Bind data and create one path per GeoJSON feature
-                //console.log(json_data);
-                //console.log(json_data);
                 svg.selectAll("path")
                     .data(json_data.features)
                     .enter()
@@ -521,7 +560,6 @@
                     })
                     .attr('stroke',function(d,i){
                         if(i == 41){
-                            //console.log("running inside 41");
                             //return primaryColor;
                             return "#000000";
                         }
@@ -570,22 +608,11 @@
             }
 
             function update_geo_when_clicked(){
-                //console.log("running inside update geo when clicked");
- 
-                //remove_geo_graph();
-                // Because we want to color the outline of one neighborhood in front of the others we add another feature
-                // to the geojson data. We then need to recolor the firestations onto the map.
-
-                //console.log("neighborhood chosen");
-                //console.log(neighborhood_chosen_index);
-
                 remove_extra_feature_geo();
 
                 // Get the chosen neighborhood's feature
                 var feature = geojson.features[neighborhood_chosen_index];
                 geojson.features.push(feature);   
-                console.log(geojson);
-
 
                 // Update the geograph
                 svg.selectAll("path")
@@ -622,7 +649,6 @@
                     })
                     .attr('stroke',function(d,i){
                         if(i == 41){
-                            //console.log("running inside 41");
                             //return primaryColor;
                             return "#000000";
                         }
@@ -793,19 +819,11 @@
                     hood_data_stack = neighborhood_map_data[neighborhood_chosen_index];
                 }
 
-                console.log(hood_data_stack);
-                console.log(hood_data_stack["late-ratio"]);
-                console.log(hood_data_stack["verylate-ratio"]);
-                console.log(hood_data_stack["distance"]);
-
                 var ABC = [
                     1 - hood_data_stack['late-ratio'],
                     hood_data_stack['late-ratio'] - hood_data_stack['verylate-ratio'],
                     hood_data_stack['verylate-ratio']
                 ];
-
-                console.log("ABC");
-                console.log(ABC);
 
                 var data_stack_update = [
                     {steps: 'Response time', A: ABC[0], B: ABC[1], C: ABC[2]},
@@ -834,13 +852,11 @@
 
                 layer.selectAll("rect")
                     .data(function (d) {
-                        //console.log(d);
                         return d;
                     })
                     .transition()
                     .duration(500)
                     .attr("y", function (d) {
-                        //console.log(d.y + d.y0);
                         return y_stack(d.y + d.y0);
                     })
                     .attr("height", function (d) {
@@ -864,7 +880,6 @@
                         return "--" + Math.round(total_percentage * 100) + "%";
                     })
                     .attr("y", function(d,i) {
-                        //console.log(d[0].y0);
                         var text_y = y_stack(d[0].y0 + d[0].y) 
                         return text_y;
                     })
@@ -872,12 +887,8 @@
 
 
             function update_data(){
-                //console.log(geo_button_year_chosen);
                 var key = "combined" +  filter_yearbutton_id(geo_button_year_chosen);
-                //console.log(key);
                 neighborhood_map_data = neighborhood_map_data_overall[key];
-                //console.log("neighborhood map data chosen");
-                //console.log(neighborhood_map_data);
             }
 
             function update_neighborhood(index){
@@ -893,7 +904,6 @@
             // Get color for an district based on corresponding average respond time
             function getColor_district(index){
                 if(geo_button_chosen == "geo_button1"){
-                    //console.log(index);
                     var respondtime = Math.round(neighborhood_map_data[index]["response"]["avg"]);
                     if(respondtime >= 480){
                         return map_color[3];
@@ -910,7 +920,6 @@
                 }
                 else if (geo_button_chosen == "geo_button2"){
                     var avg_distance = neighborhood_map_data[index]["distance"]["avg"]*1000;
-                    //console.log(avg_distance);
                     if(avg_distance >= 1500){
                         return map_color[3];
                     }
@@ -1077,7 +1086,6 @@
             // Sets the text color of each p as black except the chosen model
             function setcolor_button(chosen_button, button_cluster) {
                 button_cluster = ".button_geo" + button_cluster;
-                //console.log(button_cluster);
 
                 d3.selectAll("button")
                     .filter(button_cluster)
@@ -1089,7 +1097,6 @@
             }
 
             function filter_yearbutton_id(id){
-                console.log(id);
                 if(id == "y2012"){
                     return "2012";
                 }

@@ -20,6 +20,7 @@
                     <div class="visual-container"> 
                         <div class='visual-buttons'> 
                             <a href="index.html"> <button id="page1_btn" class="visual-button page_button_chosen banner-btns">Introduction</button></a>
+                            <a href="analysis.html"> <button id="page5_btn" class="visual-button banner-btns">Analysis</button></a>
                             <a href="responsetime.html"> <button id="page2_btn" class="visual-button banner-btns">Response time</button></a>
                             <a href="geoplot.html"><button id="page3_btn" class="visual-button banner-btns">Geo plot</button></a>
                             <a href="machinelearning.html"><button id="page4_btn" class="visual-button banner-btns">Machine learning</button></a>
@@ -33,26 +34,58 @@
                     <h2>The project</h2>
                     <div class="visual-container"> 
                         <div id="Visualization1_text">
-                            <p>In the following section we will analyse the dataset Fire Calls-For-Service. The dataset includes all fire units reponses to calls. Each record includes the call number, incident number, address, unit identifier, call type and disposition. All relevent time intervals are also included and that is what this article will mainly focus on. Because the dataset is based on repsonses, and since most calls involve multiple units, there are multiple record for each call number. In the following analysis the reponds time is defined as the time that it take the first responding unit to show up for service. 
 
-                            To make the analysis even more interesting we included two additional datasets. One that includes the location of each firestation in SF and one that contains general information about each neighborhood in San Francisco. 
+                        <h5> Intro </h5>
+
+                        The aim of this project is to explore the difference in response time in relation to both time and neighborhoos in San Francisco. We wanted to anwer questions like, is there a difference in the response time between neighborhoods? Is there a difference in response time between .... bla bla  TODO koma með eitthvað áhugavert intro á þetta.
+
+                        To accomplish this we explored the Fire Calls-For-Service data set from San Francisco. This article is devided into the following five sections; 
+
+                        <ul>
+                            <li><a href="index.html" class="introduction" style="color:rgba(208,85,75,1)"> INTRODUCTION </a> - Contains the idea of the project and information about the datasets</li>
+                            <li><a href="index.html" class="introduction" style="color:rgba(208,85,75,1)"> ANALYSIS </a> - Pre analysis of the Fire Calls-For-Service dataset</li>
+                            <li><a href="responsetime.html" class="introduction" style="color:rgba(208,85,75,1)"> RESPONSE TIME </a>- Responsive histogram of neighborhood's response time</li>
+                            <li><a href="geoplot.html" class="introduction" style="color:rgba(208,85,75,1)"> GEO PLOT </a>- Responsive geo plot containing analysis of each neighborhood TODO orða betur</li>
+                            <li><a href="machinelearning.html" class="introduction" style="color:rgba(208,85,75,1)"> MACHINE LEARNING </a> -  Models created in order to predict the response time </li>
+                        </ul> 
+
+                        To get the most from this website we encourage the reader to go through the website in this order. 
+
+                        <p> </p>
+
+                        <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=JO5uepJrnf0&feature=youtu.be">here</a>. We recommend drinking three cups of coffee before watching the video to avoid falling asleep.  </p>
+
+                        If you, my dear reader, are more interested in further exploring the work done you are more than welcome to explore our exploratory notebook which can be found by clicking the link down below. 
+
+                        <a href=""> Exploratory notebook </a> <br/>
+
+                        <h5> Datasets </h5>
+
+                            <p>The main data set behind the analysis in this website is the Fire Calls-For-Service dataset from the city of San Francisco. The dataset includes all fire units reponses to calls. Each record includes the call number, incident number, address, unit identifier, call type and disposition. All relevent time intervals are also included in the dataset. Because the dataset is based on responses, and since most calls involve multiple units, there are multiple record for each call number. In this article the reponse time is defined as the time that it take the first responding unit to show up for service. Further analyses of this dataset can be found by clicking on the analysis button here above. The dataset can be downloaded from following link <a href="https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3/data"> SF Call For Service </a>. We focused on the periods from 2012 to 2017.
                             </p>
 
-                            <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=wxvRpqFD-ck">here.</a> </p>
-
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel placerat arcu, ac ultricies metus. Fusce quis nibh massa. Proin sagittis risus ex, vel aliquam sem egestas et. Nulla facilisi. Pellentesque sodales, urna sed dictum sagittis, risus dui viverra dui, in sodales augue metus quis odio. Nullam orci urna, pretium ut laoreet id, gravida in tellus. Donec ullamcorper rhoncus consectetur. 
+                            <p> To get more perspective into our analysis we added information about each neighborhood in San Francisco. Unfortunately we did not find any open data sets that contained the wanted information and therefore we needed to create our own data set. The neighborhood´s information was found and extracted from this website <a href="http://www.city-data.com/nbmaps/neigh-San-Francisco-California.html "> SF neighborhood info </a>. The website contains alot of information about each neighborhood, therefore we needed to extract the most relevant information resulting in the following list.
+                                <ul>
+                                  <li style="padding:0; margin:0">Total population</li>
+                                  <li style="padding:0; margin:0">Population density - People per square mile</li>
+                                  <li style="padding:0; margin:0">Area - in square miles</li>
+                                  <li style="padding:0; margin:0">Median household income</li>
+                                  <li style="padding:0; margin:0">Ratio of people below poverty level</li>
+                                  <li style="padding:0; margin:0">Ratio of people that speak english</li>
+                                  <li style="padding:0; margin:0">Ratio of foreign born residents</li>
+                                </ul>
+                          
+                            This info can be seen by hoovering over each neighborhood in the responsive geoplot which can be found by clicking the responsive geoplot button here above.
                             </p>
 
-                            <a href=""> Link to notebook 1 </a> <br/>
-                            <a href=""> Link to notebook 2 </a> <br/>
-                            <a href=""> Link to notebook 3 </a>
+                            <p> The third data set, used in this article, contains the location and the battalion of each fire station. This data set is also self made and the information was extracted from the following website  
+                                <a href="http://sf-fire.org/fire-station-locations"> Fire Station Locations. </a> 
+                            </p>
+
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div> 
     </body>
 </html>

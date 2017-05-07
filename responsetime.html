@@ -20,6 +20,7 @@
                     <div class="visual-container"> 
                         <div class='visual-buttons'> 
                             <a href="index.html"> <button id="page1_btn" class="visual-button banner-btns">Introduction</button></a>
+                            <a href="analysis.html"> <button id="page5_btn" class="visual-button banner-btns">Analysis</button></a>
                             <a href="responsetime.html"> <button id="page2_btn" class="visual-button page_button_chosen banner-btns">Response time</button></a>
                             <a href="geoplot.html"><button id="page3_btn" class="visual-button banner-btns">Geo plot</button></a>
                             <a href="machinelearning.html"><button id="page4_btn" class="visual-button banner-btns">Machine learning</button></a>
@@ -32,6 +33,12 @@
                 <div class='twelve columns exercise-view'>
 
                     <h2>Analysing respond time</h2>
+
+                    <p>
+
+                        In this responsive histogram a visualization of the average response time for each neighborhood in San Francisco can be seen. When the 911 Dispatch Center receives an emergency phone call the call is assigned to one of the following groups; fire, alarm, potentially life treatening and non life treatening. All calls are therefore divided into these four main groups. By toggling the buttons you can see how the response time differs, in each neighborhood, between these call type groups. You can also choose the period you want to see by toggling the period buttons. By hoovering over each bar you can see more statistic, keep in mind that late responds time is defined as more than ten minutes and very late response time is defined as more than twenty minutes.
+
+                    </p>
 
                     <div class="visual-container"> 
 
@@ -55,6 +62,19 @@
                         <div id="area2"></div> 
 
                     </div>
+
+                    <h5> Some thoughs </h5>
+                        <ul>
+                            <li>
+                            The difference in the average response time between the non life threatening group and the other three groups is significant. Most likely, this does not come as a surprise to anyone. It is easy to understand that fire and potentially life threatening events get higher priority than a event that is not considered as life threatening. But this also shows us that when the call is not fire related it is quite important that the employee that answers the phone makes a right decision when assigning the case. The difference between the non life threatening group and the potentially life threatening group is around 50 most of the neighborhoods. So the lesson learned must be that if you find your self in a situation where you need a medical assistant in San Francisco, try to be as dramatic as possible.
+                            </li>
+                            <li>
+                            The overall average responds time increases in 2014. This caught our attention and we tried to find out why without any luck, but there are some interesting thinks that happened that year. On march 11, 2014 there was an 5-alarm apartment development fire where approximately 90 fire trucks battled with the fire.  If you are interested in reading more about the year 2014 of the San Francisco fire department you can do that here <a href="http://jimmyblackman.com/wp-content/uploads/2015/06/Final-SFFD-2014-Photo-Book-1.pdf"  style="color:rgba(208,85,75,1)">  2014 year in review</a>  and if you find something interesting that can explain this difference please let us know. 
+                            </li>
+                            <li>
+                            When looking at the over all average response time for the fire call group one can see couple of clear outliers.  Most of these outliers are understandable because they are either an island or parks with very few inhabitants and it is hard to get to. But two neighborhoods need further attention, they are Seacliff and Lakeshore. Seacliff is a small neighborhood with few inhabitants, it is known for its large houses and ocean views and the median income in the neighborhood is high. It is interesting to see that ratio of late response time, when there is fire, is 37.54% and ratio of very late response time is 10.28%. One explanation for this could be that there are very few fire incidents in a small rich neighborhood like this and most of the fires are likely small and not very dangerous, but I do not think that the habitants of Seacliff are very happy with a response time of 8 min and 2 sek. The other interesting neighborhood to look at is Lakeshore. In case of fire the ratio of late response time is 41.03% and ratio of very late response time is 9.4%, the average response time is 8 minutes and 19 sek. The late response time can partly be explained by low population density, the neighborhood is one of the largest neighborhood in San Francisco but contains few habitants. The neighborhood mainly consist of golf course, a zoo and the San Francisco State University campus. The most likely reason for this late response time must be the distance to the nearest fire station. There is no fire station directly in the neighborhood, like can be seen <a href="geoplot.html" class="introduction" style="color:rgba(208,85,75,1)"> here </a>, and the average distance to the responding fire station is high.
+                            </li>
+                        </ul> 
                 </div>
             </div>
 
@@ -73,6 +93,8 @@
             setcolor_button_hist(button_chosen_cluster1,1);
             setcolor_button_hist(button_chosen_cluster2,2);
 
+            var neighborhoods_statistic;
+
 
             d3.json("Notebook/Data/response_time_groups.json", function(error,json) {
                 if (error) {  //If error is not null, something went wrong.
@@ -82,6 +104,17 @@
                     console.log("respondtime groups");
                     console.log(json);  //Log the data.
                     response_times = json;
+
+                    // Reading in neighborhood info json
+                    d3.json("Notebook/Data/neighborhood_statistic.json", function(error,json) {
+                        if (error) {  //If error is not null, something went wrong.
+                            console.log(error);  //Log the error.
+                        } 
+                        else {  
+                            console.log(json);
+                            neighborhoods_statistic = json;
+                        }   
+                    });
 
                     var margin = {top: 40, right: 20, bottom: 200, left: 60},
                     width = 960 - margin.left - margin.right,
@@ -107,16 +140,34 @@
                     var tip = d3.tip()
                         .attr('class', 'd3-tip')
                         .offset([-20, 0])
-                        .html(function(d) {
-                            return "<div style='margin: 0px 0px 15px 0px; text-align:center';><strong style='margin-right: 6px'>" +d['hood'] + "</strong></div>"
+                        .html(function(d,i) {
+                             var additional_info_html = "<div style='margin: 0px 0px 15px 0px; text-align:center';><strong style='margin-right: 6px'>" +d['hood'] + "</strong></div>"
 
                             + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average respond time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + minutes_from_seconds(d["response"]["avg"]) + "</div>"
 
-                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to nearest fire station:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getMetersFromKm(d["distance"]["avg"]) + " meters" +"</div>"
+                            + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Average distance to responding fire station:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getMetersFromKm(d["distance"]["avg"]) + " meters" +"</div>"
 
                             + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ration of late responds time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getPercentage(d["late-ratio"]) + "%" + "</div>"
 
                             + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ration of critically late responds time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>" + getPercentage(d["verylate-ratio"]) + "%" + "</div>"
+
+                              + "<div style='margin-bottom: 10px'><strong style='margin-right: 6px'>" + "Additional info:" + "</strong></div>";;
+
+
+                            if(neighborhoods_statistic[i]['neighborhood'] == "Lincoln Park" || neighborhoods_statistic[i]['neighborhood'] == "McLaren Park"){
+                                return additional_info_html + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "This is just a park so there is no additional info to see here" + "</span></strong> </div>";
+                            }
+                            else {
+                                return additional_info_html
+                            
+                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Population:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['total_population'] + " inhabitants" + "</span>  </div>"
+
+                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Population density:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['people_density'] + " per square mile"  + "</span>  </div>"
+
+                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Area:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + neighborhoods_statistic[i]['area'] + " square miles" + "</span>  </div>"
+
+                                + "<div style='margin-bottom: 6px'><span class='tipperCol' >" + "Median household income:" + "</span></strong> <span style='color:rgba(255,255,255,0.9)'>" + "$ "+ neighborhoods_statistic[i]['household_income'] + "</span> <span class='tipperCol' >" + "</span>   </div>";
+                            }
                         });
                     
 
