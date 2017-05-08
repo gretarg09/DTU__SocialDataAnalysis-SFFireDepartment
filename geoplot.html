@@ -43,7 +43,7 @@
 
                         </p>
                         <p>
-                            On the right side of the geo plot a stack histogram of the response time distribution can be found. It shows the ratio of acceptable response times, late response times and critically late response times.
+                            On the right side of the geo plot a stack histogram of the response time distribution can be found. It shows the ratio of acceptable response times, late response times and critically late response times. You can hover over the bar to get exect value for each part.
 
                             <!-- You can get the response time distribution for each neighborhood by clicking on the neighborhood in the geo plot and you can see how it has evolved over the years by toggling the period buttons.-->
                         </p>
@@ -155,10 +155,11 @@
 
                         <ul>
                                 <li>
-                                    interesting thing 1
+                                    By looking at the average response time distribution geographically couple of interesting thinks can be seen. The average response time is generally highest in the neighborhoods with low population density or in neighborhoods located in the edge of the city. The neighborhoods with the worst average response time are Twin peaks and Treasure Island. Twin peaks are two prominent hills with an elevation of about 285 meters, located geographically in the middle of San Francisco. Treasure Island is, like the name reveals, an island located in the north of San Francisco. These neighborhoods have that in common that they are located in a area which can be difficult to travel quickly to and therefore, in way this high average response time is understandable. 
+
                                 </li>
                                 <li>
-                                    interesting thing 2
+                                    The average distance to responding fire stations is geographically like you would expect. The average distance is smallest in the neighborhoods in the center of San Francisco where the population density is highest and it gets worse when you move further away from the city center. The neighborhoods with the highest average distance are located on the edge of the city.
                                 </li>
                                 <li>
                                     interesting thing 3
@@ -999,10 +1000,10 @@
                     text4 = "Avg. distance to firestation < 500 m";
                 }
                 else if (geo_button_chosen == "geo_button3"){
-                    text1 = "Ratio of late responses >= 10%";
-                    text2 = "7,5% <= Ratio of late responses < 10%";
-                    text3 = "5% <= Ratio of late respones < 7,5%";
-                    text4 = "Ratio of late responses < 5%";
+                    text1 = "Ratio of late responses >= 30%";
+                    text2 = "25% <= Ratio of late responses < 30%";
+                    text3 = "20% <= Ratio of late respones < 25%";
+                    text4 = "Ratio of late responses < 20%";
                 }
                 else if (geo_button_chosen == "geo_button4"){
                     text1 = "Ratio of critically late responses >= 10%";
