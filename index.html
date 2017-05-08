@@ -36,14 +36,18 @@
 
                         <h5> Intro </h5>
 
-                        The aim of this project is to explore the difference in response time in relation to both time and neighborhoos in San Francisco. We wanted to anwer questions like, is there a difference in the response time between neighborhoods? Is there a difference in response time between .... bla bla  TODO koma með eitthvað áhugavert intro á þetta.
+                        Fire departments play a vital role in most communities over the world. Fire fighter do not only prevent loss of life from fires, their task varies from rescuing victims from hazardous conditions to administering first aid during medial emergencies, in fact that is the biggest part of their jobs. In the article
+                        <a href="http://work.chron.com/importance-firefighter-19431.html">The Importance of a Firefighter</a>
+                        they found out that firefighters respond to almost 20 million medical emergencies, compared to approximately 1.4 million fires yearly on a national level in America. The response time of the fire department can make the difference between life and death, it is vital for all communities that the response time is minimized as much as possible. </br>
+
+                        In this website we will take a look the response time of the Fire Department of San Francisco. The aim of the analysis is to explore the difference in response time in relation to both time and location in San Francisco. More specifically, we will try to create visualization that answers the following questions; is there a difference in response time between neighborhoods in San Francisco? is the response time dependent on the time of the day and is there a difference in response time between different types of calls e.g fire, alarm, life threatening, non life threatening? </br>
 
                         To accomplish this we explored the Fire Calls-For-Service data set from San Francisco. This article is devided into the following four sections; 
 
                         <ul>
                             <li><a href="index.html" class="introduction" style="color:rgba(208,85,75,1)"> INTRODUCTION </a> - Contains the idea of the project and information about the datasets</li>
                             <li><a href="responsetime.html" class="introduction" style="color:rgba(208,85,75,1)"> RESPONSE TIME </a>- Responsive histogram of neighborhood's response time</li>
-                            <li><a href="geoplot.html" class="introduction" style="color:rgba(208,85,75,1)"> GEO PLOT </a>- Responsive geo plot containing analysis of each neighborhood TODO orða betur</li>
+                            <li><a href="geoplot.html" class="introduction" style="color:rgba(208,85,75,1)"> GEO PLOT </a>- Responsive geo plot where difference in response time between neighborhoods in San Francisco is visualized geographically.</li>
                             <li><a href="machinelearning.html" class="introduction" style="color:rgba(208,85,75,1)"> MACHINE LEARNING </a> -  Models created in order to predict the response time </li>
                         </ul> 
 
@@ -53,11 +57,11 @@
 
                         <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=JO5uepJrnf0&feature=youtu.be">here</a>. We recommend drinking three cups of coffee before watching the video to avoid falling asleep.  </p>
 
-                        If you, my dear reader, are more interested in further exploring the work done you are more than welcome to explore our exploratory notebook which can be found by clicking  <a href=""> here </a> <br/>.
+                        If you, my dear reader, are interested in further exploring the analysing work done you are more than welcome to check out our exploratory notebook which contains more technical and in depth analysis of the dataset. The exploratory notebook can be found by clicking  <a href="explainer_notebook.ipynb"> here </a> <br/>.
 
                         <h5> Datasets </h5>
 
-                            <p>The main data set behind the analysis in this website is the Fire Calls-For-Service dataset from the city of San Francisco. The dataset includes all fire units reponses to calls. Each record includes the call number, incident number, address, unit identifier, call type and disposition. All relevent time intervals are also included in the dataset. Because the dataset is based on responses, and since most calls involve multiple units, there are multiple record for each call number. In this article the reponse time is defined as the time that it takes the first responding unit to show up for service. The dataset can be downloaded from following link <a href="https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3/data"> SF Call For Service </a>. We focused on the periods from 2012 to 2017.
+                            <p>The main data set behind the analysis in this website is the Fire Calls-For-Service dataset from the city of San Francisco. The dataset includes all fire units reponses to calls. Each record includes the call number, incident number, address, unit identifier, call type and disposition. All relevent time intervals are also included in the dataset. Because the dataset is based on responses, and since most calls involve multiple units, there are multiple record for each call number. In this article the reponse time is defined as the time that it takes the first responding unit to show up for service. The dataset can be downloaded from following link <a href="https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3/data"> SF Call For Service </a>. We focused on the period from 1st of January 2012 to 1st of January 2017.
                             </p>
 
                             <p> To get more perspective into our analysis we added information about each neighborhood in San Francisco. Unfortunately we did not find any open data sets that contained the wanted information and therefore we needed to create our own data set. The neighborhood´s information was found and extracted from this website <a href="http://www.city-data.com/nbmaps/neigh-San-Francisco-California.html "> SF neighborhood info </a>. The website contains alot of information about each neighborhood, therefore we needed to extract the most relevant information resulting in the following list.
