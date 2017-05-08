@@ -22,7 +22,7 @@
                             <a href="index.html"> <button id="page1_btn" class="visual-button banner-btns">Introduction</button></a>
                             <a href="responsetime.html"> <button id="page2_btn" class="visual-button banner-btns">Response time</button></a>
                             <a href="geoplot.html"><button id="page3_btn" class="visual-button page_button_chosen banner-btns">Geo plot</button></a>
-                            <a href="machinelearning.html"><button id="page4_btn" class="visual-button banner-btns">Machine learning</button></a>
+                            <a href="machinelearning.html"><button id="page4_btn" class="visual-button banner-btns">Prediction</button></a>
                         </div>
                     <div id="Visualization1_text">
                 </div>
@@ -39,21 +39,21 @@
                             
                         </p>
                         <p>
-                            In this responsive geo plot the difference in response time between neighborhoods in San Francisco is visualized geographically. Each neighborhood is colored based on one of the following measures; neighborhood's average response time, average distance to responding fire station, ratio of late response time or ratio of critically late response time. Here, like in the previous section, late response time is defined as more than 10 minutes and critically late response time is defined as more than 20 minutes. On the left side of the geo plot you can see what each color corresponds to. 
+                            In this responsive geo plot the difference in response time between neighborhoods in San Francisco is visualized geographically. Each neighborhood is colored based on one of the following measures; neighborhood's average response time, average distance to responding fire station, ratio of late response time or ratio of very late response time. Here, like in the previous section, late response time is defined as more than 10 minutes and very late response time is defined as more than 20 minutes. On the left side of the geo plot you can see what each color corresponds to. 
 
                         </p>
                         <p>
-                            On the right side of the geo plot a stack histogram of the response time distribution can be found. It shows the ratio of acceptable response times, late response times and critically late response times. You can hover over the bar to get exect value for each part.
+                            On the right side of the geo plot a stack histogram of the response time distribution can be found. It shows the ratio of acceptable response times, ratio of late response times and ratio of very late response times. You can hover over the bar to get exect value for each part.
 
                             <!-- You can get the response time distribution for each neighborhood by clicking on the neighborhood in the geo plot and you can see how it has evolved over the years by toggling the period buttons.-->
                         </p>
                         <p>
-                            Below the geo plot is a responsive histogram where you can find the average response time for each hour of the day. 
+                            Below the geo plot is a responsive histogram where you can find the average response time for each hour of the day. You can hover over the bar to get the exact response time in minutes.
 
                             <!--You can change the values of the histogram by choosing a neighborhood or by toggling the period buttons.-->
                         </p>
                         <p>
-                            By hovering over the geo plot you can get further information about each neighborhood. You can select the neighborhood by pressing on it, when chosen the neighborhood will fade in and out. When you have chosen the neighborhood the stacked histogram on the right site and the "hour of the day" histogram under the geo plot will render information about the chosen neighborhood. You can then toggle the periods button to see how the values have changed over the years. You can un select the neighborhood by pressing on it again.
+                            By hovering over the geo plot you can get further information about each neighborhood. You can select the neighborhood by pressing on it, when chosen the neighborhood will fade in and out. When you have chosen the neighborhood the stacked histogram on the right side and the "hour of the day" histogram under the geo plot will render information about the chosen neighborhood. You can then toggle the periods button to see how the values have changed over the years. You can un select the neighborhood by pressing on it again.
                         </p>
 
                         <p>
@@ -74,7 +74,7 @@
                             <button id="geo_button1" class="button_geo button_geo1 visual-button">Average response time</button>
                             <button id="geo_button2" class="button_geo button_geo1 visual-button">Average distance to responding fire station</button>
                             <button id="geo_button3" class="button_geo button_geo1 visual-button">Ratio of late response time </button>
-                            <button id="geo_button4" class="button_geo button_geo1 visual-button">Ratio of critically late response time </button>
+                            <button id="geo_button4" class="button_geo button_geo1 visual-button">Ratio of very late response time </button>
                     </div>
                 </div>
             </div>
@@ -155,18 +155,20 @@
 
                         <ul>
                                 <li>
-                                    By looking at the average response time distribution geographically couple of interesting thinks can be seen. The average response time is generally highest in the neighborhoods with low population density or in neighborhoods located in the edge of the city. The neighborhoods with the worst average response time are Twin peaks and Treasure Island. Twin peaks are two prominent hills with an elevation of about 285 meters, located geographically in the middle of San Francisco. Treasure Island is, like the name reveals, an island located in the north of San Francisco. These neighborhoods have that in common that they are located in a area which can be difficult to travel quickly to and therefore, in way this high average response time is understandable. 
+                                    By looking at the average response time distribution geographically couple of interesting things can be seen. The average response time is highest in the neighborhoods with low population density or in neighborhoods located in the edge of the city. The neighborhoods with the highest average response time are Twin peaks and Treasure Island. Twin peaks are two prominent hills with an elevation of about 285 meters, located geographically in the middle of San Francisco. Treasure Island is, like the name reveals, an island located in the north of San Francisco. These neighborhoods have it in common that they are located in a area which can be difficult to travel quickly to and therefore this high average response time can be considered understandable. 
 
                                 </li>
                                 <li>
-                                    The average distance to responding fire stations is geographically like you would expect. The average distance is smallest in the neighborhoods in the center of San Francisco where the population density is highest and it gets worse when you move further away from the city center. The neighborhoods with the highest average distance are located on the edge of the city.
+                                    The average distance to responding fire stations is geographically like you would expect. The average distance is smallest in the neighborhoods close to the center of San Francisco where the population density is highest. The average distance gets higher when you move further away from the city center. The neighborhoods with the highest average distance to responding fire station are located on the edge of the city.
                                 </li>
                                 <li>
-                                    interesting thing 3
+                                    The neighborhoods located in the southeastern corner of San Francisco all have rather high average response time as well as high ration of both late and very late responses. This caught our attention, neighborhoods like Excelsior, Visitacion Valley and Bayview Hunters Point are all neighborhoods with high amount of population but the average responds time in these neighborhoods is high. This in our opinion is an interesting thing to investigate further. There seems to be opportunity for the fire department of San Francisco to do better in these neighborhoods. With further investigation we found out that Bayview Hunters Point is one of the city's most violent neighborhood, it is interesting to see that this neighborhood contains four fire stations and two more are located on the edge of the neighborhood, but despite of that the neighborhood's average response time is quite high. You can read more about these neighborhoods by clicking on the following links .  <a href="https://en.wikipedia.org/wiki/Excelsior_District,_San_Francisco"> Excelsior</a> , <a href="https://en.wikipedia.org/wiki/Visitacion_Valley,_San_Francisco"> Visitacion</a> , <a href="https://en.wikipedia.org/wiki/Bayview-Hunters_Point,_San_Francisco"> Bayview Hunters Point </a>   
+                                </li>
+                                <li>
+                                    To conclude, longar waits for assistance from the fire department are more likely for souther residents of San Francisco. Interestingly this <a href="http://www.sfgate.com/bayarea/article/Delays-compound-S-F-s-ambulance-crisis-5769934.php#photo-6891963"> article </a> came to similar conclusion in 2014, where this indifference in response time between neighborhoods is criticised. 
                                 </li>
                             </ul> 
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -437,7 +439,7 @@
               .style("text-anchor", "start")
               .text(function(d, i) { 
                 switch (i) {
-                  case 0: return "% of critically late response t.";
+                  case 0: return "% of very late response t.";
                   case 1: return "% of late response t.";
                   case 2: return "% of acceptable response t.";
                 }
@@ -1006,10 +1008,10 @@
                     text4 = "Ratio of late responses < 20%";
                 }
                 else if (geo_button_chosen == "geo_button4"){
-                    text1 = "Ratio of critically late responses >= 10%";
-                    text2 = "7,5% <= Ratio of critically late responses < 10%";
-                    text3 = "5% <= Ratio of critically late respones < 7,5%";
-                    text4 = "Ratio of critically late responses < 5%";
+                    text1 = "Ratio of very late responses >= 10%";
+                    text2 = "7,5% <= Ratio of very late responses < 10%";
+                    text3 = "5% <= Ratio of very late respones < 7,5%";
+                    text4 = "Ratio of very late responses < 5%";
                 }
                 else {
                     text1 = "";
@@ -1068,7 +1070,7 @@
 
                         + "<div style='margin-bottom: 6px '><span class='tipperCol' >" + "Ratio of late response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>"  + getPercentage(neighborhood_map_data[i]["late-ratio"]) + "%" + "</div>"
 
-                        + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ratio of critically late response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>"  + getPercentage(neighborhood_map_data[i]["verylate-ratio"]) + "%" + "</div>"
+                        + "<div style='margin-bottom: 15px '><span class='tipperCol' >" + "Ratio of very late response time:" + "</span></strong> <span style='color:"+ secondaryColor + "'>"  + getPercentage(neighborhood_map_data[i]["verylate-ratio"]) + "%" + "</div>"
 
                         + "<div style='margin-bottom: 10px'><strong style='margin-right: 6px'>" + "Additional info:" + "</strong></div>";
 
